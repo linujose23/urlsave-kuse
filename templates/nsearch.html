@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load embed_video_tags %}
+
+{% for match,descr in zipped %}
+
+
+<div class="container">
+
+    <h3>Description : {{ descr }}</h3>
+
+    {% video match.the_url as my_video %}
+
+    {% video my_video "tiny" %}
+    {% endvideo %}
+    <br>
+    {% video my_video '200x300' %}
+    <br>
+
+</div>
+{% endfor %}
+{% endblock %}
+
+<!--
+<div class="container">
+    {% video match.the_url as my_video %}
+
+    {% video my_video "tiny" %}
+    {% endvideo %}
+    <br>
+    {% video my_video '200x300' %}
+    <br>
+</div> -->

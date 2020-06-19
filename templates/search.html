@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for m,n in zipped %}
+
+<div class="container">
+    <h3>video Link :</h3>
+    <br>
+
+    <a class="youtube" href={{ m.the_url }}>
+        <img src="{{ n }}" alt={{ m.desc }} />
+    </a>
+    <h3>Description : {{ m.desc }}</h3>
+
+</div>
+
+
+<!-- <a href={{ m.the_url }}>{{ m.the_url }}</a> -->
+
+<!-- <h1>video link: {{  m.the_url }} </h1> -->
+
+{% endfor %} {% endblock %}
