@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="centered">
+        <h1>Welcome to Search URL's App:</h1>
+    </div>
+</div>
+<br>
+<br>
+<div class="container">
+
+    <form method="POST" action="{% url 'new_search' %}" class="form-inline md-form mr-auto mb-4">
+        {% csrf_token %}
+        <label for="search">Enter the video's title below to search:</label>
+        <br>
+        <input class="form-control mr-sm-2" id="search" type="text" placeholder="Search" aria-label="Search"
+            name="searched">
+        <button class="btn btn-outline-warning btn-rounded btn-sm my-0" type="submit" name="searchbtn">Search</button>
+    </form>
+</div>
+<br>
+<div class="container">
+    <form method="post" action="{% url 'func' %}">
+        {% csrf_token %}
+
+
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Enter the URL here to save video to library:</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="the_url"
+                placeholder="Enter the URL here"></textarea>
+            <br>
+            <button type="submit" class="btn btn-primary mb-2">Save URL</button>
+        </div>
+    </form>
+</div>
+{% load embed_video_tags %}
+
+<div class="container">
+    <h3>Few videos from our library:</h3>
+    <br>
+</div>
+
+{% for last in last_five %}
+
+<div class="container">
+
+    <!-- <h3>Description : {{ descr }}</h3> -->
+
+    {% video last.the_url as my_video %}
+
+    {% video my_video "tiny" %}
+    {% endvideo %}
+    <br>
+    {% video my_video '200x300' %}
+    <br>
+    <h3>Description : {{ last.desc }}</h3>
+    <br>
+
+
+</div>
+{% endfor %}
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

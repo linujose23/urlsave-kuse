@@ -12,12 +12,24 @@ from urllib.parse import parse_qs
 
 # Create your views here.
 
+def display_five(request):
+
+    pass
+
 
 def func(request):
 
     if request.method == 'GET':
 
-        return render(request, 'core.html')
+        last_five = UrlSaveModel.objects.filter().order_by('-id')[:5]
+
+        # last_five = last_five[:5]
+
+        print('last_five', last_five)
+
+        latest = {'last_five': last_five}
+
+        return render(request, 'main.html', latest)
 
     elif request.method == 'POST':
 
@@ -112,3 +124,10 @@ def new_search(request):
                     return HttpResponse('No match found!')
         except:
             return HttpResponse('Please enter a valid keyword!')
+
+
+def url_search(request):
+
+    if request.method == "GET":
+
+        query = request.GET['query_url']
