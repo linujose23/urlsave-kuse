@@ -1,3 +1,4 @@
+from django.contrib.auth import logout
 from django.shortcuts import render
 from .models import UrlSaveModel
 from .forms import UrlSaveForm
@@ -8,13 +9,55 @@ from urllib.request import urlopen
 from django.contrib import messages
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect
+from .forms import NewUserForm
+from django.contrib.auth import logout
+from django.shortcuts import HttpResponseRedirect
 
 
 # Create your views here.
 
-def display_five(request):
+def login_request(request):
+    if request.method == 'POST':
+        print('login_request')
+        form = AuthenticationForm(request=request, data=request.POST)
+        print('r', request.POST['username'])
+        if form.is_valid():
+            print('form erors:', form.errors)
+            print('form valid')
+            username = request.POST['username']
+            password = request.POST['password']
+            print('username', username)
+            print('password', password)
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.info(request, f"You are now logged in as {username}")
+                return redirect('home/')
+            else:
+                messages.error(request, "Invalid username or password.")
+        else:
+            messages.error(request, "Invalid username or password.")
+    form = AuthenticationForm()
+    return render(request=request,
+                  template_name="login.html",
+                  context={"form": form})
 
-    pass
+
+def Registration(request):
+
+    form = NewUserForm()
+
+    context = {'form': form}
+
+    return render(request, 'new_user.html', context=context)
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 
 def func(request):
@@ -22,10 +65,6 @@ def func(request):
     if request.method == 'GET':
 
         last_five = UrlSaveModel.objects.filter().order_by('-id')[:5]
-
-        # last_five = last_five[:5]
-
-        print('last_five', last_five)
 
         latest = {'last_five': last_five}
 
