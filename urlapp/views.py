@@ -133,6 +133,37 @@ def search(request):
             return HttpResponse('Please enter a valid keyword!')
 
 
+def show_thumnails(request):
+
+    all_thumbnails = []
+
+    last_five = UrlSaveModel.objects.filter().order_by('-id')[:5]
+
+    # latest = {'last_five': last_five}
+
+    for last in last_five:
+        print('last', last)
+
+        url_data = urlparse(last.the_url)
+        query = parse_qs(url_data.query)
+        video_id = query["v"][0]
+
+        thumbnails_url = "http://i3.ytimg.com/vi/"+video_id+"/hqdefault.jpg"
+
+        print('thumbnails:', thumbnails_url)
+
+        all_thumbnails.append(thumbnails_url)
+
+    zipped = zip(last_five, all_thumbnails)
+
+# print('matched 74', matched)
+    params = {'zipped': zipped}
+
+    # params = {'matches': match, 'vid': vid}
+
+    return render(request, 'thumb_main.html', params)
+
+
 def new_search(request):
 
     if request.method == "POST":
