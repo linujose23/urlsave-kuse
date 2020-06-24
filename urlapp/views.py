@@ -9,6 +9,7 @@ from urllib.request import urlopen
 from django.contrib import messages
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
+from urllib.parse import parse_qsl
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
@@ -112,7 +113,7 @@ def search(request):
                     for matched in match:
 
                         url_data = urlparse(matched.the_url)
-                        query = parse_qs(url_data.query)
+                        query = parse_qsl(url_data.query)
                         video_id = query["v"][0]
 
                         fvid = "http://i3.ytimg.com/vi/"+video_id+"/default.jpg"
@@ -144,9 +145,10 @@ def show_thumnails(request):
     for last in last_five:
         print('last', last)
 
-        url_data = urlparse(last.the_url)
+        url_data = urlparse(str(last.the_url))
         query = parse_qs(url_data.query)
         video_id = query["v"][0]
+        print('video_id:', video_id)
 
         thumbnails_url = "http://i3.ytimg.com/vi/"+video_id+"/hqdefault.jpg"
 
