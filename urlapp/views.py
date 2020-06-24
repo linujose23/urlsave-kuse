@@ -16,9 +16,10 @@ from django.shortcuts import redirect
 from .forms import NewUserForm
 from django.contrib.auth import logout
 from django.shortcuts import HttpResponseRedirect
-
+from pytube import YouTube
 
 # Create your views here.
+
 
 def login_request(request):
     if request.method == 'POST':
@@ -143,14 +144,18 @@ def show_thumnails(request):
     # latest = {'last_five': last_five}
 
     for last in last_five:
-        print('last', last)
+        print('last', last.the_url)
 
-        url_data = urlparse(str(last.the_url))
-        query = parse_qs(url_data.query)
-        video_id = query["v"][0]
-        print('video_id:', video_id)
+        yt = YouTube(last.the_url)
 
-        thumbnails_url = "http://i3.ytimg.com/vi/"+video_id+"/hqdefault.jpg"
+        thumbnails_url = yt.thumbnail_url
+
+        # url_data = urlparse(last.the_url)
+        # query = parse_qs(url_data.query)
+        # video_id = query["v"][0]
+        # print('video_id:', video_id)
+
+        # thumbnails_url = "http://i3.ytimg.com/vi/"+video_id+"/hqdefault.jpg"
 
         print('thumbnails:', thumbnails_url)
 
