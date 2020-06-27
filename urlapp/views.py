@@ -27,12 +27,9 @@ def login_request(request):
         form = AuthenticationForm(request=request, data=request.POST)
         print('r', request.POST['username'])
         if form.is_valid():
-            print('form erors:', form.errors)
             print('form valid')
             username = request.POST['username']
             password = request.POST['password']
-            print('username', username)
-            print('password', password)
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
@@ -140,6 +137,10 @@ def show_thumnails(request):
     all_thumbnails = []
 
     last_five = UrlSaveModel.objects.filter().order_by('-id')[:5]
+    import os
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    print('BASE_DIR', BASE_DIR)
 
     # latest = {'last_five': last_five}
 
@@ -168,7 +169,7 @@ def show_thumnails(request):
 
     # params = {'matches': match, 'vid': vid}
 
-    return render(request, 'thumb_main.html', params)
+    return render(request, 'home.html', params)
 
 
 def new_search(request):
@@ -203,8 +204,8 @@ def new_search(request):
             return HttpResponse('Please enter a valid keyword!')
 
 
-def url_search(request):
+# def url_search(request):
 
-    if request.method == "GET":
+#     if request.method == "GET":
 
-        query = request.GET['query_url']
+#         query = request.GET['query_url']
