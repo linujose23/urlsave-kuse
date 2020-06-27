@@ -147,20 +147,25 @@ def show_thumnails(request):
     for last in last_five:
         print('last', last.the_url)
 
-        yt = YouTube(last.the_url)
+        try:
 
-        thumbnails_url = yt.thumbnail_url
+            yt = YouTube(last.the_url)
 
-        # url_data = urlparse(last.the_url)
-        # query = parse_qs(url_data.query)
-        # video_id = query["v"][0]
-        # print('video_id:', video_id)
+            thumbnails_url = yt.thumbnail_url
 
-        # thumbnails_url = "http://i3.ytimg.com/vi/"+video_id+"/hqdefault.jpg"
+            # url_data = urlparse(last.the_url)
+            # query = parse_qs(url_data.query)
+            # video_id = query["v"][0]
+            # print('video_id:', video_id)
 
-        print('thumbnails:', thumbnails_url)
+            # thumbnails_url = "http://i3.ytimg.com/vi/"+video_id+"/hqdefault.jpg"
 
-        all_thumbnails.append(thumbnails_url)
+            print('thumbnails:', thumbnails_url)
+
+            all_thumbnails.append(thumbnails_url)
+
+        except:
+            pass
 
     zipped = zip(last_five, all_thumbnails)
 
