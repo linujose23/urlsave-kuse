@@ -13,12 +13,31 @@ from urllib.parse import parse_qsl
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
-from .forms import NewUserForm
+from .forms import UserSignUpForm
 from django.contrib.auth import logout
 from django.shortcuts import HttpResponseRedirect
 from pytube import YouTube
 
 # Create your views here.
+
+
+def signup_request(request):
+
+    form = UserSignUpForm()
+
+    if request.method == 'POST':
+
+        form = UserSignUpForm(request.POST)
+
+        if form.is_valid():
+
+            print('signup form is valid!')
+
+            form.save()
+
+    context = {'form': form}
+
+    return render(request, 'new_user.html', context=context)
 
 
 def login_request(request):
@@ -45,15 +64,6 @@ def login_request(request):
                   context={"form": form})
 
 
-def Registration(request):
-
-    form = NewUserForm()
-
-    context = {'form': form}
-
-    return render(request, 'new_user.html', context=context)
-
-
 def logout_view(request):
     logout(request)
     return redirect('login')
@@ -78,9 +88,9 @@ def func(request):
                 print('form is valid')
 
                 posted_url = request.POST['the_url']
-                video_ = etree.HTML(urlopen(posted_url).read())
-                video_title = video_.xpath("//span[@id='eow-title']/@title")
-                description = ''.join(video_title)
+                yt = YouTube(posted_url)
+
+                description = yt.title
                 print('description-extracted:', description)
 
                 print('Posted_url', posted_url)
@@ -91,7 +101,7 @@ def func(request):
 
             else:
                 print('error', form.errors)
-                return render(request, 'core.html')
+                return render(request, 'save.html')
         except:
             return HttpResponse('Please enter a valid URL only!')
 
@@ -153,13 +163,6 @@ def show_thumnails(request):
 
             thumbnails_url = yt.thumbnail_url
 
-            # url_data = urlparse(last.the_url)
-            # query = parse_qs(url_data.query)
-            # video_id = query["v"][0]
-            # print('video_id:', video_id)
-
-            # thumbnails_url = "http://i3.ytimg.com/vi/"+video_id+"/hqdefault.jpg"
-
             print('thumbnails:', thumbnails_url)
 
             all_thumbnails.append(thumbnails_url)
@@ -169,10 +172,7 @@ def show_thumnails(request):
 
     zipped = zip(last_five, all_thumbnails)
 
-# print('matched 74', matched)
     params = {'zipped': zipped}
-
-    # params = {'matches': match, 'vid': vid}
 
     return render(request, 'home.html', params)
 
@@ -208,9 +208,5 @@ def new_search(request):
         except:
             return HttpResponse('Please enter a valid keyword!')
 
-
-# def url_search(request):
-
-#     if request.method == "GET":
-
-#         query = request.GET['query_url']
+    else:
+        pass

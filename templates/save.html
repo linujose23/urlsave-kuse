@@ -1,0 +1,21 @@
+{% extends 'base.html' %} {% block content %}
+
+<form method="post" action="{% url 'func' %}">
+  {% csrf_token %}
+
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1"
+      >Enter the URL here to save video to library:</label
+    >
+    <textarea
+      class="form-control"
+      id="exampleFormControlTextarea1"
+      rows="2"
+      name="the_url"
+      placeholder="Enter the URL here"
+    ></textarea>
+    <br />
+    <button type="submit" class="btn btn-primary mb-2">Save URL</button>
+  </div>
+</form>
+{% endblock %}
