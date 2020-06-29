@@ -82,28 +82,28 @@ def func(request):
     elif request.method == 'POST':
 
         form = UrlSaveForm(request.POST)
-        try:
-            if form.is_valid():
+        # try:
+        if form.is_valid():
 
-                print('form is valid')
+            print('form is valid')
 
-                posted_url = request.POST['the_url']
-                yt = YouTube(posted_url)
+            posted_url = request.POST['the_url']
+            yt = YouTube(posted_url)
 
-                description = yt.title
-                print('description-extracted:', description)
+            description = yt.title
+            print('description-extracted:', description)
 
-                print('Posted_url', posted_url)
-                obj = UrlSaveModel(desc=description, the_url=posted_url)
-                obj.save()
+            print('Posted_url', posted_url)
+            obj = UrlSaveModel(desc=description, the_url=posted_url)
+            obj.save()
 
-                return HttpResponse('saved sucessfully!')
+            return HttpResponse('saved sucessfully!')
 
-            else:
-                print('error', form.errors)
-                return render(request, 'save.html')
-        except:
-            return HttpResponse('Please enter a valid URL only!')
+        else:
+            print('error', form.errors)
+            return render(request, 'save.html')
+        # except:
+            # return HttpResponse('Please enter a valid URL only!')
 
 
 def search(request):
