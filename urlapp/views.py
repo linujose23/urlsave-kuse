@@ -13,7 +13,7 @@ from urllib.parse import parse_qsl
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
-from .forms import UserSignUpForm
+# from .forms import UserSignUpForm
 from django.contrib.auth import logout
 from django.shortcuts import HttpResponseRedirect
 from pytube import YouTube
