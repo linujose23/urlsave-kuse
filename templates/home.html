@@ -1,453 +1,641 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <!-- {% load static %} -->
 <div id="header">
-    <div id="companyheader" class="headerdiv">
-        <div class="logoDiv">
-            <img class="logoImg" onclick="goToHome();" src="{% static 'pludo/images/drawable-xhdpi/PluudoLogo.png' %}">
-        </div>
-        <div class="search-back-button" style="display:none;">
-            <img onclick="backPage();" src="{% static 'pludo/images/drawable-xhdpi/BACKBUTTON.png' %}">
-        </div>
-        <div class="searchDiv">
-            <img class="searchIcon" src="{% static 'pludo/images/drawable-xhdpi/VIEWTEXT.png' %}">
-
-        </div>
-        <div>
-            <label id="updateText" style="position: absolute;
-													right: 16px;
-													bottom: -15px;
-													color: #D5DDE1;display:none;font-family:montserratRegular;font-size:12px;height: auto;">Update</label>
-        </div>
+  <div id="companyheader" class="headerdiv">
+    <div class="logoDiv">
+      <img
+        class="logoImg"
+        onclick="goToHome();"
+        src="{% static 'pludo/images/drawable-xhdpi/PluudoLogo.png' %}"
+      />
     </div>
+    <div class="search-back-button" style="display: none;">
+      <img
+        onclick="backPage();"
+        src="{% static 'pludo/images/drawable-xhdpi/BACKBUTTON.png' %}"
+      />
+    </div>
+    <div class="searchDiv">
+      <img
+        class="searchIcon"
+        src="{% static 'pludo/images/drawable-xhdpi/VIEWTEXT.png' %}"
+      />
+    </div>
+    <div>
+      <label
+        id="updateText"
+        style="
+          position: absolute;
+          right: 16px;
+          bottom: -15px;
+          color: #d5dde1;
+          display: none;
+          font-family: montserratRegular;
+          font-size: 12px;
+          height: auto;
+        "
+        >Update</label
+      >
+    </div>
+  </div>
 </div>
 
 <div id="loadPage">
+  {% for m,n in zipped %}
 
-    {% for m,n in zipped %}
-
-    <div class=" container">
-        <!-- <h3>video Link :</h3> -->
-        <br>
-
-        <!-- <h3>Description : {{ m.desc }}</h3> -->
-
-        <a class="youtube" href={{ m.the_url }}>
-            <img src="{{ n }}" alt={{ m.desc }} width="300" height="300" />
-        </a>
-
+  <div id="videoIcon2" class="bgWhiteTextBlack mt-4">
+    <div id="thumbnailImg2" class="thumbnailImg" style="position: relative;">
+      <img id="img2" onclick="showvideo(2);" class="img100" src="{{ n }}" />
+      <div id="hideVideo2" class="img100 hide-video" style="height: 20px;">
+        <div>
+          <p class="hide-video-p thumbnailP multi-line-truncate">
+            Video Hidden <br />from your Plüüdo
+          </p>
+        </div>
+        <div style="margin-top: 10%;">
+          <button class="undo-button" onclick="undoVideo(2);" type="button">
+            UNDO
+          </button>
+        </div>
+      </div>
     </div>
+    <div id="thumbnailDetails2" class="thumbnailDetail">
+      <div class="thumbnailtext">
+        <p class="thumbnailP multi-line-truncate">Salvatore Ferragamo F80</p>
+      </div>
+      <div class="controlicon" onclick="showOptionPopup(2);">
+        <img class="controlimg" src="{% static 'pludo/images/drawable-xhdpi/CONTROLSICON.png' %}" />
+      </div>
+    </div>
+  </div>
 
-    {% endfor %}
-
+  {% endfor %}
 </div>
 
-<div id="footer" style="display: block;
+<div
+  id="footer"
+  style="
+    display: block;
     position: fixed;
-    bottom: 15px;width:100%;height:50px;">
-    <div class="menudiv" id="footerOptions" style="display:none;">
-
-
-        <div class="menusearch">
-            <form><img class="menuImg" id="plusMenu1" onclick="displaySearch();"
-                    src="{% static 'pludo/images/drawable-xhdpi/SEARCH.png' %}">
-            </form>
-        </div>
-
-
-        <div class="menuprofile">
-            <form><img class="menuImg" id="plusMenu2" onclick="addProfile();"
-                    src="{% static 'pludo/images/drawable-xhdpi/PROFILE.png' %}">
-            </form>
-        </div>
-
-
-        <div class="menuplus">
-            <form><img class="menuImg" id="plusMenu3" onclick="displayAddVideo();"
-                    src="{% static 'pludo/images/drawable-xhdpi/ADD.png' %}">
-            </form>
-        </div>
-
-
-
+    bottom: 15px;
+    width: 100%;
+    height: 50px;
+  "
+>
+  <div class="menudiv" id="footerOptions" style="display: none;">
+    <div class="menusearch">
+      <form>
+        <img
+          class="menuImg"
+          id="plusMenu1"
+          onclick="displaySearch();"
+          src="{% static 'pludo/images/drawable-xhdpi/SEARCH.png' %}"
+        />
+      </form>
     </div>
 
-    <div style="position:absolute;right:5%;top:0px;width: 8%;">
-        <img class="openmenuImg" id="plusMenu4" onclick="showMenu();"
-            src="{% static 'pludo/images/drawable-xhdpi/MAINMENU.png' %}">
+    <div class="menuprofile">
+      <form>
+        <img
+          class="menuImg"
+          id="plusMenu2"
+          onclick="addProfile();"
+          src="{% static 'pludo/images/drawable-xhdpi/PROFILE.png' %}"
+        />
+      </form>
     </div>
 
+    <div class="menuplus">
+      <form>
+        <img
+          class="menuImg"
+          id="plusMenu3"
+          onclick="displayAddVideo();"
+          src="{% static 'pludo/images/drawable-xhdpi/ADD.png' %}"
+        />
+      </form>
+    </div>
+  </div>
 
+  <div style="position: absolute; right: 5%; top: 0px; width: 8%;">
+    <img
+      class="openmenuImg"
+      id="plusMenu4"
+      onclick="showMenu();"
+      src="{% static 'pludo/images/drawable-xhdpi/MAINMENU.png' %}"
+    />
+  </div>
 </div>
 
-
-<!-- Modal -->
 <div class="modal" id="optionModel" role="dialog">
-    <div class="maindialog">
+  <div class="maindialog">
+    <div style="background-color: transparent;">
+      <div id="popupmenu" class="bgwhite menuoptions">
+        <div class="options-popup" onclick="showAllClusters();">
+          <img
+            id="saveoption"
+            class="img100withPadding"
+            src="{% static 'pludo/images/drawable-xhdpi/SAVEPOPUP.png' %}"
+          />
 
-        <div style="background-color:transparent;">
-
-
-            <div id="popupmenu" class="bgwhite menuoptions">
-
-                <div class="options-popup" onclick="showAllClusters();">
-                    <img id="saveoption" class="img100withPadding"
-                        src="{% static 'pludo/images/drawable-xhdpi/SAVEPOPUP.png' %}">
-
-                    <div style="position:absolute;right:-75px;color:white;top:0px;">
-                        <p class="img100withPadding" style="margin: auto;line-height: 55px;" class="save">SAVE</p>
-                    </div>
-                </div>
-                <div class="options-popup" style="margin-top: 22px;">
-                    <img id="shareoption" class="p-t0" onclick="shareVideo()"
-                        src="{% static 'pludo/images/drawable-xhdpi/SHAREPOPUP.png' %}">
-
-                    <div style="position:absolute;right:-86px;color:white;top:0px;">
-                        <p class="img100withPadding" style="margin: auto;line-height: 55px;" class="save">SHARE</p>
-                    </div>
-
-                </div>
-                <div class="options-popup" style="margin-top: 22px;">
-                    <img id="reportoption" class="p-t0" onclick="menuClick('report');"
-                        src="{% static 'pludo/images/drawable-xhdpi/REPORTPOPUP.png' %}">
-
-                    <div style="position:absolute;right:-74px;color:white;top:0px;">
-                        <p class="img100withPadding" style="margin: auto;line-height: 55px;" class="save">HIDE</p>
-                    </div>
-                </div>
-                <div class="options-popup" style="margin-top: 22px;">
-                    <img id="closeoption" class="p-t10" onclick="menuClick('close');"
-                        src="{% static 'pludo/images/drawable-xhdpi/CANCELPOPUP.png' %}">
-                </div>
-            </div>
-
-
+          <div
+            style="position: absolute; right: -75px; color: white; top: 0px;"
+          >
+            <p
+              class="img100withPadding"
+              style="margin: auto; line-height: 55px;"
+              class="save"
+            >
+              SAVE
+            </p>
+          </div>
         </div>
+        <div class="options-popup" style="margin-top: 22px;">
+          <img
+            id="shareoption"
+            class="p-t0"
+            onclick="shareVideo()"
+            src="{% static 'pludo/images/drawable-xhdpi/SHAREPOPUP.png' %}"
+          />
 
+          <div
+            style="position: absolute; right: -86px; color: white; top: 0px;"
+          >
+            <p
+              class="img100withPadding"
+              style="margin: auto; line-height: 55px;"
+              class="save"
+            >
+              SHARE
+            </p>
+          </div>
+        </div>
+        <div class="options-popup" style="margin-top: 22px;">
+          <img
+            id="reportoption"
+            class="p-t0"
+            onclick="menuClick('report');"
+            src="{% static 'pludo/images/drawable-xhdpi/REPORTPOPUP.png' %}"
+          />
+
+          <div
+            style="position: absolute; right: -74px; color: white; top: 0px;"
+          >
+            <p
+              class="img100withPadding"
+              style="margin: auto; line-height: 55px;"
+              class="save"
+            >
+              HIDE
+            </p>
+          </div>
+        </div>
+        <div class="options-popup" style="margin-top: 22px;">
+          <img
+            id="closeoption"
+            class="p-t10"
+            onclick="menuClick('close');"
+            src="{% static 'pludo/images/drawable-xhdpi/CANCELPOPUP.png' %}"
+          />
+        </div>
+      </div>
     </div>
+  </div>
 </div>
-
 
 <div class="modal" id="optionModelWithCluster" role="dialog">
-    <div class="maindialog">
+  <div class="maindialog">
+    <div style="background-color: transparent;">
+      <div
+        id="popupmenu"
+        class="menuoptions"
+        style="
+          margin: 0;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          -ms-transform: translate(-50%, -50%);
+          transform: translate(-35%, -50%);
+          width: auto;
+        "
+      >
+        <div
+          onclick="recentClusterSave();"
+          class="bgwhite"
+          style="
+            width: 62%;
+            padding: 22px;
+            border-radius: 5em;
+            margin-bottom: 10px;
+            position: relative;
+          "
+        >
+          <img
+            id="saveoption"
+            class="img100withPadding"
+            src="{% static 'pludo/images/drawable-xhdpi/profile1.png' %}"
+          />
 
-        <div style="background-color:transparent;">
-
-
-
-            <div id="popupmenu" class="menuoptions" style="    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-35%, -50%);width: auto;
-">
-
-                <div onclick="recentClusterSave();" class="bgwhite" style="width: 62%;
-    padding: 22px;
-    border-radius: 5em;margin-bottom: 10px;position: relative;">
-                    <img id="saveoption" class="img100withPadding"
-                        src="{% static 'pludo/images/drawable-xhdpi/profile1.png' %}">
-
-                    <div style="top: 30%;
-    position: absolute;
-    right: -105px;
-    color: white;
-">
-                        <p class="img100withPadding" style="margin: auto;line-height:20px;width:50%" class="save">
-                            WALK
-                            TOGETHER</p>
-                    </div>
-
-                </div>
-
-                <div class="bgwhite" style="width: 62%;
-    padding: 22px;
-    border-radius: 5em;">
-                    <div class="options-popup" onclick="showAllClusters();">
-                        <img id="saveoption" class="img100withPadding"
-                            src="{% static 'pludo/images/drawable-xhdpi/SAVEPOPUP.png' %}">
-
-                        <div style="position:absolute;right:-75px;color:white;top:0px;">
-                            <p class="img100withPadding" style="margin: auto;line-height: 55px;" class="save">SAVE
-                            </p>
-                        </div>
-                    </div>
-                    <div class="options-popup" style="margin-top: 22px;">
-                        <img id="shareoption" class="p-t0" onclick="shareVideo();"
-                            src="{% static 'pludo/images/drawable-xhdpi/SHAREPOPUP.png' %}">
-
-                        <div style="position:absolute;right:-86px;color:white;top:0px;">
-                            <p class="img100withPadding" style="margin: auto;line-height: 55px;" class="save">SHARE
-                            </p>
-                        </div>
-
-                    </div>
-                    <div class="options-popup" style="margin-top: 22px;">
-                        <img id="reportoption" class="p-t0" onclick="menuClick('report');"
-                            src="{% static 'pludo/images/drawable-xhdpi/REPORTPOPUP.png' %}">
-
-                        <div style="position:absolute;right:-95px;color:white;top:0px;">
-                            <p class="img100withPadding" style="margin: auto;line-height: 55px;" class="save">REPORT
-                            </p>
-                        </div>
-                    </div>
-                    <div class="options-popup" style="margin-top: 22px;">
-                        <img id="closeoption" class="p-t10" onclick="menuClick('close');"
-                            src="{% static 'pludo/images/drawable-xhdpi/CANCELPOPUP.png' %}">
-                    </div>
-                </div>
-            </div>
-
-
+          <div
+            style="top: 30%; position: absolute; right: -105px; color: white;"
+          >
+            <p
+              class="img100withPadding"
+              style="margin: auto; line-height: 20px; width: 50%;"
+              class="save"
+            >
+              WALK TOGETHER
+            </p>
+          </div>
         </div>
 
+        <div
+          class="bgwhite"
+          style="width: 62%; padding: 22px; border-radius: 5em;"
+        >
+          <div class="options-popup" onclick="showAllClusters();">
+            <img
+              id="saveoption"
+              class="img100withPadding"
+              src="{% static 'pludo/images/drawable-xhdpi/SAVEPOPUP.png' %}"
+            />
+
+            <div
+              style="position: absolute; right: -75px; color: white; top: 0px;"
+            >
+              <p
+                class="img100withPadding"
+                style="margin: auto; line-height: 55px;"
+                class="save"
+              >
+                SAVE
+              </p>
+            </div>
+          </div>
+          <div class="options-popup" style="margin-top: 22px;">
+            <img
+              id="shareoption"
+              class="p-t0"
+              onclick="shareVideo();"
+              src="{% static 'pludo/images/drawable-xhdpi/SHAREPOPUP.png' %}"
+            />
+
+            <div
+              style="position: absolute; right: -86px; color: white; top: 0px;"
+            >
+              <p
+                class="img100withPadding"
+                style="margin: auto; line-height: 55px;"
+                class="save"
+              >
+                SHARE
+              </p>
+            </div>
+          </div>
+          <div class="options-popup" style="margin-top: 22px;">
+            <img
+              id="reportoption"
+              class="p-t0"
+              onclick="menuClick('report');"
+              src="{% static 'pludo/images/drawable-xhdpi/REPORTPOPUP.png' %}"
+            />
+
+            <div
+              style="position: absolute; right: -95px; color: white; top: 0px;"
+            >
+              <p
+                class="img100withPadding"
+                style="margin: auto; line-height: 55px;"
+                class="save"
+              >
+                REPORT
+              </p>
+            </div>
+          </div>
+          <div class="options-popup" style="margin-top: 22px;">
+            <img
+              id="closeoption"
+              class="p-t10"
+              onclick="menuClick('close');"
+              src="{% static 'pludo/images/drawable-xhdpi/CANCELPOPUP.png' %}"
+            />
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
-
-
 
 <div class="modal" id="videoSaved" role="dialog">
-    <div class="maindialog">
+  <div class="maindialog">
+    <div
+      data-toggle="modal"
+      data-target="#videoSaved"
+      style="background-color: transparent;"
+    >
+      <div class="label-cluster">
+        <label
+          style="
+            color: white;
+            font-size: 15px;
+            font-family: montserratRegular;
+            margin: auto;
+          "
+          >VIDEO SAVED IN</label
+        >
+      </div>
 
-        <div data-toggle="modal" data-target="#videoSaved" style="background-color:transparent;">
-            <div class="label-cluster">
-                <label style="color:white;font-size:15px;font-family: montserratRegular;margin:auto;">VIDEO SAVED
-                    IN</label>
-            </div>
-
-            <div id="popupmenu" class="bgwhite update-cluster">
-
-                <button id="videoSaveInCluster" onclick="removeVideos();" class="btn btn-default btn-sm" style="width: 100%;
-									background-color: white;
-									font-family: montserratBold;
-									color: black;
-									outline: none;
-									border-color: transparent;
-									font-size: 16px;
-									font-weight: 900;
-									text-align: center;border-radius: 20px;">WALK TOGETHER</button>
-
-            </div>
-
-
-        </div>
-
+      <div id="popupmenu" class="bgwhite update-cluster">
+        <button
+          id="videoSaveInCluster"
+          onclick="removeVideos();"
+          class="btn btn-default btn-sm"
+          style="
+            width: 100%;
+            background-color: white;
+            font-family: montserratBold;
+            color: black;
+            outline: none;
+            border-color: transparent;
+            font-size: 16px;
+            font-weight: 900;
+            text-align: center;
+            border-radius: 20px;
+          "
+        >
+          WALK TOGETHER
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 
-
 <div class="modal" id="showClusterList" role="dialog">
-    <div class="maindialog">
+  <div class="maindialog">
+    <div style="background-color: transparent;">
+      <div id="popupmenu" class="bgwhite">
+        <div id="clusterList" class="cluster-list">
+          <div>
+            <img
+              onclick="hideClusterList();"
+              style="position: fixed; right: 10px; width: 6%;"
+              src="{% static 'pludo/images/drawable-xhdpi/DOWNARROW.png' %}"
+            />
+          </div>
 
-        <div style="background-color:transparent;">
-
-
-            <div id="popupmenu" class="bgwhite">
-
-                <div id="clusterList" class="cluster-list">
-
-                    <div>
-                        <img onclick="hideClusterList();" style="position:fixed;right:10px;width: 6%;"
-                            src="{% static 'pludo/images/drawable-xhdpi/DOWNARROW.png' %}">
-                    </div>
-
-                    <div>
-                        <label class="clustor-list-heading">Select a cluster to save</label>
-                    </div>
-                    <div>
-                        <div class="add-clustor-list">
-                            <img class="profile-plus" src="{% static 'pludo/images/drawable-xhdpi/profileplus.png' %}">
-                            <input type="text" style="position: absolute;
-																	right: 50px;
-																	width: 70%;
-																	top: 50%;
-																	transform: translate(0, -50%);
-																	text-align: right;
-																	border: none;font-size:12px;" id="makeClustor" placeholder="Make a new Cluster">
-                            <img class="clear-profile-add" onclick="clearProfileAdd();"
-                                src="{% static 'pludo/images/drawable-xhdpi/SEARCHCANCEL.png' %}">
-                        </div>
-                        <div class="add-clustor-others-list">
-                            <img src="{% static 'pludo/images/drawable-xhdpi/profile1.png' %}">
-                            <span>Sky Fly</span>
-                        </div>
-                        <div class="add-clustor-others-list">
-                            <img src="{% static 'pludo/images/drawable-xhdpi/profile2.png' %}">
-                            <span>Walk Together</span>
-                        </div>
-                        <div class="add-clustor-others-list">
-                            <img src="{% static 'pludo/images/drawable-xhdpi/profile3.png' %}">
-                            <span>Space Craft</span>
-                        </div>
-                        <div class="add-clustor-others-list">
-                            <img src="{% static 'pludo/images/drawable-xhdpi/profile4.png' %}">
-                            <span>My Recipes</span>
-                        </div>
-
-                        <div class="add-clustor-others-list">
-                            <img src="{% static 'pludo/images/drawable-xhdpi/profile1.png' %}">
-                            <span>Sky Fly</span>
-                        </div>
-                        <div class="add-clustor-others-list">
-                            <img src="{% static 'pludo/images/drawable-xhdpi/profile2.png' %}">
-                            <span>Walk Together</span>
-                        </div>
-                        <div class="add-clustor-others-list">
-                            <img src="{% static 'pludo/images/drawable-xhdpi/profile3.png' %}">
-                            <span>Space Craft</span>
-                        </div>
-                        <div class="add-clustor-others-list">
-                            <img src="{% static 'pludo/images/drawable-xhdpi/profile4.png' %}">
-                            <span>My Recipes</span>
-                        </div>
-                    </div>
-                </div>
-
+          <div>
+            <label class="clustor-list-heading">Select a cluster to save</label>
+          </div>
+          <div>
+            <div class="add-clustor-list">
+              <img
+                class="profile-plus"
+                src="{% static 'pludo/images/drawable-xhdpi/profileplus.png' %}"
+              />
+              <input
+                type="text"
+                style="
+                  position: absolute;
+                  right: 50px;
+                  width: 70%;
+                  top: 50%;
+                  transform: translate(0, -50%);
+                  text-align: right;
+                  border: none;
+                  font-size: 12px;
+                "
+                id="makeClustor"
+                placeholder="Make a new Cluster"
+              />
+              <img
+                class="clear-profile-add"
+                onclick="clearProfileAdd();"
+                src="{% static 'pludo/images/drawable-xhdpi/SEARCHCANCEL.png' %}"
+              />
+            </div>
+            <div class="add-clustor-others-list">
+              <img
+                src="{% static 'pludo/images/drawable-xhdpi/profile1.png' %}"
+              />
+              <span>Sky Fly</span>
+            </div>
+            <div class="add-clustor-others-list">
+              <img
+                src="{% static 'pludo/images/drawable-xhdpi/profile2.png' %}"
+              />
+              <span>Walk Together</span>
+            </div>
+            <div class="add-clustor-others-list">
+              <img
+                src="{% static 'pludo/images/drawable-xhdpi/profile3.png' %}"
+              />
+              <span>Space Craft</span>
+            </div>
+            <div class="add-clustor-others-list">
+              <img
+                src="{% static 'pludo/images/drawable-xhdpi/profile4.png' %}"
+              />
+              <span>My Recipes</span>
             </div>
 
-
+            <div class="add-clustor-others-list">
+              <img
+                src="{% static 'pludo/images/drawable-xhdpi/profile1.png' %}"
+              />
+              <span>Sky Fly</span>
+            </div>
+            <div class="add-clustor-others-list">
+              <img
+                src="{% static 'pludo/images/drawable-xhdpi/profile2.png' %}"
+              />
+              <span>Walk Together</span>
+            </div>
+            <div class="add-clustor-others-list">
+              <img
+                src="{% static 'pludo/images/drawable-xhdpi/profile3.png' %}"
+              />
+              <span>Space Craft</span>
+            </div>
+            <div class="add-clustor-others-list">
+              <img
+                src="{% static 'pludo/images/drawable-xhdpi/profile4.png' %}"
+              />
+              <span>My Recipes</span>
+            </div>
+          </div>
         </div>
-
+      </div>
     </div>
+  </div>
 </div>
 
 <div class="modal" id="videoUpdated" role="dialog">
-    <div class="maindialog">
-
-        <div data-toggle="modal" data-target="#videoUpdated" style="background-color:transparent;">
-
-
-            <div id="popupmenu" class="bgwhite update-cluster">
-
-                <button id="removeVideo" onclick="removeVideos();" class="btn btn-default btn-sm" style="border-radius: 30px;
-    width: 100%;
-    background-color: white;
-    font-family: montserratBold;
-    color: black;
-    outline: none;
-    border-color: transparent;
-    font-size:15px;
-    font-weight: 900;
-    text-align: center;">VIDEO DETAILS UPDATED</button>
-
-            </div>
-
-
-        </div>
-
+  <div class="maindialog">
+    <div
+      data-toggle="modal"
+      data-target="#videoUpdated"
+      style="background-color: transparent;"
+    >
+      <div id="popupmenu" class="bgwhite update-cluster">
+        <button
+          id="removeVideo"
+          onclick="removeVideos();"
+          class="btn btn-default btn-sm"
+          style="
+            border-radius: 30px;
+            width: 100%;
+            background-color: white;
+            font-family: montserratBold;
+            color: black;
+            outline: none;
+            border-color: transparent;
+            font-size: 15px;
+            font-weight: 900;
+            text-align: center;
+          "
+        >
+          VIDEO DETAILS UPDATED
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 
-
-
 <div class="modal" id="videoRemoved" role="dialog">
-    <div class="maindialog">
+  <div class="maindialog">
+    <div
+      data-toggle="modal"
+      data-target="#videoRemoved"
+      style="background-color: transparent;"
+    >
+      <div class="label-cluster">
+        <label
+          style="
+            color: white;
+            font-size: 15px;
+            font-family: montserratRegular;
+            margin: auto;
+            width: max-content;
+          "
+          >VIDEO REMOVED FROM CLUSTER</label
+        >
+      </div>
 
-        <div data-toggle="modal" data-target="#videoRemoved" style="background-color:transparent;">
-            <div class="label-cluster">
-                <label
-                    style="color:white;font-size:15px;font-family: montserratRegular;margin:auto;width: max-content;">VIDEO
-                    REMOVED FROM CLUSTER</label>
-            </div>
-
-            <div id="popupmenu" class="bgwhite update-cluster">
-
-                <button id="videoSaveInCluster" onclick="removeVideos();" class="btn btn-default btn-sm" style="width: 100%;
-									background-color: white;
-									font-family: montserratBold;
-									color: black;
-									outline: none;
-									border-color: transparent;
-									font-size: 16px;
-									font-weight: 900;
-									text-align: center;">WALK TOGETHER</button>
-
-            </div>
-
-
-        </div>
-
+      <div id="popupmenu" class="bgwhite update-cluster">
+        <button
+          id="videoSaveInCluster"
+          onclick="removeVideos();"
+          class="btn btn-default btn-sm"
+          style="
+            width: 100%;
+            background-color: white;
+            font-family: montserratBold;
+            color: black;
+            outline: none;
+            border-color: transparent;
+            font-size: 16px;
+            font-weight: 900;
+            text-align: center;
+          "
+        >
+          WALK TOGETHER
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 
 <div class="modal" id="accDeactivated" role="dialog">
-    <div class="maindialog" data-toggle="modal" data-target="#accDeactivated">
-
-        <div style="background-color:transparent;">
-
-
-            <div id="popupmenu" class="bgwhite update-cluster">
-
-                <button class="btn btn-default btn-sm" style="border-radius: 30px;
-    width: 100%;
-    background-color: white;
-    font-family: montserratBold;
-    color: black;
-    outline: none;
-    border-color: transparent;
-    font-size: 15px;
-    font-weight: 900;
-    text-align: center;">ACCOUNT DEACTIVATED</button>
-
-            </div>
-
-
-        </div>
-
+  <div class="maindialog" data-toggle="modal" data-target="#accDeactivated">
+    <div style="background-color: transparent;">
+      <div id="popupmenu" class="bgwhite update-cluster">
+        <button
+          class="btn btn-default btn-sm"
+          style="
+            border-radius: 30px;
+            width: 100%;
+            background-color: white;
+            font-family: montserratBold;
+            color: black;
+            outline: none;
+            border-color: transparent;
+            font-size: 15px;
+            font-weight: 900;
+            text-align: center;
+          "
+        >
+          ACCOUNT DEACTIVATED
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 
-
 <div class="modal" id="showVideoPopup" role="dialog">
-    <div class="maindialog">
+  <div class="maindialog">
+    <div style="background-color: transparent;">
+      <div
+        id="popupmenu"
+        class="bgwhite"
+        style="
+          border-top-left-radius: 15px;
+          border-top-right-radius: 15px;
+          height: 75vh;
+          padding: 5%;
+          position: fixed;
+          bottom: 0px;
+          width: 90%;
+          margin-left: 5%;
+          overflow: hidden;
+          overflow-y: auto;
+        "
+      >
+        <div id="addVideoList" class="add-video">
+          <div>
+            <img
+              data-toggle="modal"
+              data-target="#showVideoPopup"
+              style="
+                position: absolute;
+                right: 2%;
+                top: 1%;
+                width: 6%;
+                width: 7%;
+                height: auto;
+              "
+              src="{% static 'pludo/images/drawable-xhdpi/DOWNARROW.png' %}"
+            />
+          </div>
 
-             <div style="background-color:transparent;">
+          <div class="video-container">
+            <div class="general-info">
+              <div class="old-search">
+                <label
+                  style="
+                    font-size: 28px;
+                    font-family: montserratRegular;
+                    word-spacing: -2px;
+                    margin: auto;
+                    margin-top: 4%;
+                  "
+                  >Add a video</label
+                >
+              </div>
 
+              <div class="video-div" style="margin-top: 4%;">
+                <input
+                  type="text"
+                  id="videosearch"
+                  autofocus="autofocus"
+                  placeholder="Paste a website url or enter link of a video"
+                />
+                <img
+                  onclick="showVideoDetails();"
+                  src="{% static 'pludo/images/drawable-xhdpi/grayarrow.png' %}"
+                />
+              </div>
 
-            <div id="popupmenu" class="bgwhite" style="border-top-left-radius: 15px;border-top-right-radius: 15px;
-    height: 75vh;
-    padding: 5%;
-    position: fixed;
-    bottom: 0px;
-    width: 90%;
-    margin-left: 5%;overflow:hidden;overflow-y:auto;">
-
-                <div id="addVideoList" class="add-video">
-
-                    <div>
-                        <img data-toggle="modal" data-target="#showVideoPopup" style="    position: absolute;
-    right: 2%;
-    top: 1%;
-    width: 6%;
-    width: 7%;
-    height: auto;" src="{% static 'pludo/images/drawable-xhdpi/DOWNARROW.png' %}">
-                    </div>
-
-
-
-                    <div class="video-container">
-
-
-
-                        <div class="general-info">
-
-                            <div class="old-search">
-                                <label
-                                    style="font-size: 28px;font-family: montserratRegular;word-spacing:-2px;margin:auto;margin-top: 4%;">Add
-                                    a video</label>
-
-                            </div>
-
-                            <div class="video-div" style="margin-top:4%;">
-                                <input type="text" id="videosearch" autofocus="autofocus"
-                                    placeholder="Paste a website url or enter link of a video" />
-                                <img onclick="showVideoDetails();"
-                                    src="{% static 'pludo/images/drawable-xhdpi/grayarrow.png' %}" />
-
-                            </div>
-
-                            <!--<div class="old-search" style="margin-top:8%;">
+              <!--<div class="old-search" style="margin-top:8%;">
 									<button class="btn btn-default btn-sm" id="searchBtn" style="border-radius:30px;
 									width:115px;
 									height:45px;
@@ -459,153 +647,199 @@
 									font-size: 13px;" onclick="searchVideo();">SEARCH</button>
 
 								</div>-->
-                            <div class="infoOfSearch">
-                                <div style="text-align:center;margin-top:8%;">
-                                    <p
-                                        style="font-size: 15px;font-family: montserratRegular !important;color:#d5dde1 !important;">
-                                        Copy and paste video url <br>from youtube, vimeo, dailymotion etc</p>
+              <div class="infoOfSearch">
+                <div style="text-align: center; margin-top: 8%;">
+                  <p
+                    style="
+                      font-size: 15px;
+                      font-family: montserratRegular !important;
+                      color: #d5dde1 !important;
+                    "
+                  >
+                    Copy and paste video url <br />from youtube, vimeo,
+                    dailymotion etc
+                  </p>
+                </div>
 
-                                </div>
-
-                                <div style="text-align:center;margin-top:13%;">
-
-                                    <p
-                                        style="font-family:montserratRegular;font-size: 15px;font-family: montserratRegular;color:#d5dde1;">
-                                        Kindly enter a single video url only</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="video-details" style="display:none;">
-                            <div>
-
-                                <!--<div class="old-search" >
+                <div style="text-align: center; margin-top: 13%;">
+                  <p
+                    style="
+                      font-family: montserratRegular;
+                      font-size: 15px;
+                      font-family: montserratRegular;
+                      color: #d5dde1;
+                    "
+                  >
+                    Kindly enter a single video url only
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="video-details" style="display: none;">
+              <div>
+                <!--<div class="old-search" >
 									<label style="font-size:20px;font-family:montserratRegular;font-size: 28px;font-family: montserratRegular;word-spacing:-2px;margin:auto;font-weight: 500;color: black;">Edit details</label>
 
 								</div>-->
 
-                                <div class="video-thubmnail">
-                                    <div class="thumbnailImg">
-                                        <img id="img1" class="img100"
-                                            src="https://img.youtube.com/vi/GuERa1mtDEc/maxresdefault.jpg">
-                                    </div>
+                <div class="video-thubmnail">
+                  <div class="thumbnailImg">
+                    <img
+                      id="img1"
+                      class="img100"
+                      src="https://img.youtube.com/vi/GuERa1mtDEc/maxresdefault.jpg"
+                    />
+                  </div>
+                </div>
 
-                                </div>
+                <div style="text-align: center; margin-top: 2%;">
+                  <label class="video-title" id="videoTitle">EDIT TITLE</label>
 
-                                <div style="text-align:center;margin-top:2%;">
-                                    <label class="video-title" id="videoTitle">EDIT TITLE</label>
+                  <div class="video-title-desc">
+                    <span class="textarea none" role="textbox" contenteditable
+                      >The Dyson Pure Cool™ Personal Purifying Fan
+                      Technology</span
+                    >
+                  </div>
+                </div>
 
-                                    <div class="video-title-desc">
-                                        <span class="textarea none" role="textbox" contenteditable>The Dyson Pure
-                                            Cool™
-                                            Personal Purifying Fan Technology</span>
-                                    </div>
+                <div style="text-align: center; margin-top: 4%;">
+                  <label class="video-title" id="videoDescription"
+                    >EDIT DESCRIPTION</label
+                  >
 
-                                </div>
+                  <div class="video-desc">
+                    <span class="textarea none" role="textbox" contenteditable
+                      >Personally made by @paulnicklen. I have seen a seal rest
+                      in more comfortable positions than a superb photography
+                      example.</span
+                    >
+                  </div>
+                </div>
 
-                                <div style="text-align:center;margin-top:4%;">
-                                    <label class="video-title" id="videoDescription">EDIT DESCRIPTION</label>
+                <div style="text-align: center; margin-top: 4%;">
+                  <label class="video-title" id="videoHashTag"
+                    >EDIT/ADD HASHTAGS</label
+                  >
 
-                                    <div class="video-desc">
-                                        <span class="textarea none" role="textbox" contenteditable>Personally made
-                                            by
-                                            @paulnicklen. I have seen a seal rest in more comfortable positions than
-                                            a
-                                            superb photography example.</span>
+                  <div class="video-desc">
+                    <span class="textarea none" role="textbox" contenteditable
+                      >#dyson #fan #technology</span
+                    >
+                  </div>
+                </div>
 
-                                    </div>
-
-                                </div>
-
-                                <div style="text-align:center;margin-top:4%;">
-                                    <label class="video-title" id="videoHashTag">EDIT/ADD HASHTAGS</label>
-
-                                    <div class="video-desc">
-                                        <span class="textarea none" role="textbox" contenteditable>#dyson #fan
-                                            #technology</span>
-
-                                    </div>
-
-                                </div>
-
-                                <!--<div class="old-search" style="margin-top:3%;position:fixed;bottom: 15px;z-index:1;left: 50%;transform: translate(-50%, 0);">
+                <!--<div class="old-search" style="margin-top:3%;position:fixed;bottom: 15px;z-index:1;left: 50%;transform: translate(-50%, 0);">
 									<button id="saveCluster" onclick="showAllClusters();" class="btn btn-primary btn-sm" style="font-size: 13px;background-color:#00AFFF">SAVE IN A CLUSTER</button>
 
 								</div>-->
+              </div>
 
-                            </div>
-
-                            <div style="height:1px;background-color:gray;margin-top:2%;margin-bottom:2%;"></div>
-                            <div id="videoClusterList">
-
-                                <div>
-                                    <label style="font-size: 18px;
-													font-family: montserratRegular;
-													margin: auto;
-													font-weight: normal;
-													margin-top: 4%;
-													color: black;
-													font-weight: 500;">Select a cluster</label>
-                                </div>
-                                <div>
-                                    <div class="add-clustor-list">
-                                        <img class="profile-plus"
-                                            src="{% static 'pludo/images/drawable-xhdpi/profileplus.png' %}">
-                                        <input type="text" style="position: absolute;
-																	right: 25px;
-																	width: 70%;
-																	top: 50%;
-																	transform: translate(0, -50%);
-																	text-align: right;
-																	border: none;" id="makeClustorVideo" placeholder="Make a new Cluster">
-                                        <img class="clear-profile-add" onclick="clearProfileAdd();"
-                                            src="{% static 'pludo/images/drawable-xhdpi/SEARCHCANCEL.png' %}">
-                                    </div>
-                                    <div class="add-clustor-others-list">
-                                        <img src="{% static 'pludo/images/drawable-xhdpi/profile1.png' %}">
-                                        <span>Sky Fly</span>
-                                    </div>
-                                    <div class="add-clustor-others-list">
-                                        <img src="{% static 'pludo/images/drawable-xhdpi/profile2.png' %}">
-                                        <span>Walk Together</span>
-                                    </div>
-                                    <div class="add-clustor-others-list">
-                                        <img src="{% static 'pludo/images/drawable-xhdpi/profile3.png' %}">
-                                        <span>Space Craft</span>
-                                    </div>
-                                    <div class="add-clustor-others-list">
-                                        <img src="{% static 'pludo/images/drawable-xhdpi/profile4.png' %}">
-                                        <span>My Recipes</span>
-                                    </div>
-
-                                    <div class="add-clustor-others-list">
-                                        <img src="{% static 'pludo/images/drawable-xhdpi/profile1.png' %}">
-                                        <span>Sky Fly</span>
-                                    </div>
-                                    <div class="add-clustor-others-list">
-                                        <img src="{% static 'pludo/images/drawable-xhdpi/profile2.png' %}">
-                                        <span>Walk Together</span>
-                                    </div>
-                                    <div class="add-clustor-others-list">
-                                        <img src="{% static 'pludo/images/drawable-xhdpi/profile3.png' %}">
-                                        <span>Space Craft</span>
-                                    </div>
-                                    <div class="add-clustor-others-list">
-                                        <img src="{% static 'pludo/images/drawable-xhdpi/profile4.png' %}">
-                                        <span>My Recipes</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
+              <div
+                style="
+                  height: 1px;
+                  background-color: gray;
+                  margin-top: 2%;
+                  margin-bottom: 2%;
+                "
+              ></div>
+              <div id="videoClusterList">
+                <div>
+                  <label
+                    style="
+                      font-size: 18px;
+                      font-family: montserratRegular;
+                      margin: auto;
+                      font-weight: normal;
+                      margin-top: 4%;
+                      color: black;
+                      font-weight: 500;
+                    "
+                    >Select a cluster</label
+                  >
                 </div>
+                <div>
+                  <div class="add-clustor-list">
+                    <img
+                      class="profile-plus"
+                      src="{% static 'pludo/images/drawable-xhdpi/profileplus.png' %}"
+                    />
+                    <input
+                      type="text"
+                      style="
+                        position: absolute;
+                        right: 25px;
+                        width: 70%;
+                        top: 50%;
+                        transform: translate(0, -50%);
+                        text-align: right;
+                        border: none;
+                      "
+                      id="makeClustorVideo"
+                      placeholder="Make a new Cluster"
+                    />
+                    <img
+                      class="clear-profile-add"
+                      onclick="clearProfileAdd();"
+                      src="{% static 'pludo/images/drawable-xhdpi/SEARCHCANCEL.png' %}"
+                    />
+                  </div>
+                  <div class="add-clustor-others-list">
+                    <img
+                      src="{% static 'pludo/images/drawable-xhdpi/profile1.png' %}"
+                    />
+                    <span>Sky Fly</span>
+                  </div>
+                  <div class="add-clustor-others-list">
+                    <img
+                      src="{% static 'pludo/images/drawable-xhdpi/profile2.png' %}"
+                    />
+                    <span>Walk Together</span>
+                  </div>
+                  <div class="add-clustor-others-list">
+                    <img
+                      src="{% static 'pludo/images/drawable-xhdpi/profile3.png' %}"
+                    />
+                    <span>Space Craft</span>
+                  </div>
+                  <div class="add-clustor-others-list">
+                    <img
+                      src="{% static 'pludo/images/drawable-xhdpi/profile4.png' %}"
+                    />
+                    <span>My Recipes</span>
+                  </div>
 
+                  <div class="add-clustor-others-list">
+                    <img
+                      src="{% static 'pludo/images/drawable-xhdpi/profile1.png' %}"
+                    />
+                    <span>Sky Fly</span>
+                  </div>
+                  <div class="add-clustor-others-list">
+                    <img
+                      src="{% static 'pludo/images/drawable-xhdpi/profile2.png' %}"
+                    />
+                    <span>Walk Together</span>
+                  </div>
+                  <div class="add-clustor-others-list">
+                    <img
+                      src="{% static 'pludo/images/drawable-xhdpi/profile3.png' %}"
+                    />
+                    <span>Space Craft</span>
+                  </div>
+                  <div class="add-clustor-others-list">
+                    <img
+                      src="{% static 'pludo/images/drawable-xhdpi/profile4.png' %}"
+                    />
+                    <span>My Recipes</span>
+                  </div>
+                </div>
+              </div>
             </div>
-
-
+          </div>
         </div>
-
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}
