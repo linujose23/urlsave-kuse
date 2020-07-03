@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import UrlSaveModel
+from .models import UrlSaveModel, UsersProfile
 from .forms import UrlSaveForm
 # Register your models here.
 
 
 admin.site.register(UrlSaveModel)
+admin.site.register(UsersProfile)

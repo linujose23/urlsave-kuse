@@ -1,6 +1,6 @@
 from django.contrib.auth import logout
 from django.shortcuts import render
-from .models import UrlSaveModel
+from .models import UrlSaveModel, UsersProfile
 from .forms import UrlSaveForm
 from django.http import HttpResponse
 import lxml
@@ -11,64 +11,97 @@ from urllib.parse import urlparse
 from urllib.parse import parse_qs
 from urllib.parse import parse_qsl
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
-# from .forms import UserSignUpForm
-from django.contrib.auth import logout
+from .forms import UserSignUpForm
 from django.shortcuts import HttpResponseRedirect
 from pytube import YouTube
+from django.contrib import messages
+from .models import *
+from .decorators import unauthenticated_user, allowed_users, admin_only
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
+from .forms import *
+
 
 # Create your views here.
 
 
 def signup_request(request):
 
-    form = UserSignUpForm()
+    if request.user.is_authenticated:
+        return redirect('account')
 
-    if request.method == 'POST':
+    else:
 
-        form = UserSignUpForm(request.POST)
+        form = UserSignUpForm()
 
-        if form.is_valid():
+        if request.method == 'POST':
 
-            print('signup form is valid!')
+            form = UserSignUpForm(request.POST)
 
-            form.save()
+            if form.is_valid():
 
-    context = {'form': form}
+                print('signup form is valid!')
 
-    return render(request, 'new_user.html', context=context)
+                usr = form.save()
+                group = None
+
+                username = form.cleaned_data.get('username')
+                group = Group.objects.get(name='user')
+                usr.groups.add(group)
+                UsersProfile.objects.create(user=usr,)
+
+                messages.success(
+                    request, 'Account was sucessfully created for ' + username)
+
+                return redirect('login')
+
+        context = {'form': form}
+
+        return render(request, 'signup_dummy.html', context)
 
 
 def login_request(request):
-    if request.method == 'POST':
-        print('login_request')
-        form = AuthenticationForm(request=request, data=request.POST)
-        print('r', request.POST['username'])
-        if form.is_valid():
-            print('form valid')
-            username = request.POST['username']
-            password = request.POST['password']
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.info(request, f"You are now logged in as {username}")
-                return redirect('home/')
+
+    if request.user.is_authenticated:
+        return redirect('account')
+
+    else:
+
+        if request.method == 'POST':
+            print('login_request')
+            form = AuthenticationForm(request=request, data=request.POST)
+            print('r', request.POST['username'])
+            if form.is_valid():
+                print('form valid')
+                username = request.POST['username']
+                password = request.POST['password']
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    messages.info(
+                        request, f"You are now logged in as {username}")
+                    return redirect('account')
+                else:
+                    messages.error(request, "Invalid username or password.")
             else:
                 messages.error(request, "Invalid username or password.")
-        else:
-            messages.error(request, "Invalid username or password.")
-    form = AuthenticationForm()
-    return render(request=request,
-                  template_name="login.html",
-                  context={"form": form})
+        form = AuthenticationForm()
+        return render(request=request,
+                      template_name="login.html",
+                      context={"form": form})
 
 
+@login_required(login_url='login')
 def logout_view(request):
-    logout(request)
-    return redirect('login')
+    if request.method == 'POST':
+
+        logout(request)
+        return redirect('login')
 
 
+@login_required(login_url='login')
 def func(request):
 
     if request.method == 'GET':
@@ -82,30 +115,31 @@ def func(request):
     elif request.method == 'POST':
 
         form = UrlSaveForm(request.POST)
-        # try:
-        if form.is_valid():
+        try:
+            if form.is_valid():
 
-            print('form is valid')
+                print('form is valid')
 
-            posted_url = request.POST['the_url']
-            yt = YouTube(posted_url)
+                posted_url = request.POST['the_url']
+                yt = YouTube(posted_url)
 
-            description = yt.title
-            print('description-extracted:', description)
+                description = yt.title
+                print('description-extracted:', description)
 
-            print('Posted_url', posted_url)
-            obj = UrlSaveModel(desc=description, the_url=posted_url)
-            obj.save()
+                print('Posted_url', posted_url)
+                obj = UrlSaveModel(desc=description, the_url=posted_url)
+                obj.save()
 
-            return HttpResponse('saved sucessfully!')
+                return HttpResponse('saved sucessfully!')
 
-        else:
-            print('error', form.errors)
-            return render(request, 'save.html')
-        # except:
-            # return HttpResponse('Please enter a valid URL only!')
+            else:
+                print('error', form.errors)
+                return render(request, 'save.html')
+        except:
+            return HttpResponse('Please enter a valid URL only!')
 
 
+@login_required(login_url='login')
 def search(request):
 
     if request.method == "POST":
@@ -142,17 +176,12 @@ def search(request):
             return HttpResponse('Please enter a valid keyword!')
 
 
-def show_thumnails(request):
+@login_required(login_url='login')
+def show_thumbnails(request):
 
     all_thumbnails = []
 
     last_five = UrlSaveModel.objects.filter().order_by('-id')[:5]
-    import os
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-    print('BASE_DIR', BASE_DIR)
-
-    # latest = {'last_five': last_five}
 
     for last in last_five:
         print('last', last.the_url)
@@ -177,6 +206,26 @@ def show_thumnails(request):
     return render(request, 'home.html', params)
 
 
+@login_required(login_url='login')
+# @allowed_users(allowed_roles=['User'])
+def account(request):
+    usersemail = request.user.email
+    userinfo = UsersProfile.objects.get(email=usersemail)
+    form = UserForm(instance=userinfo)
+    if request.method == "POST":
+
+        form = UserForm(request.POST, request.FILES, instance=userinfo)
+
+        if form.is_valid():
+
+            form.save()
+
+    context = {'userinfo': userinfo, 'form': form}
+
+    return render(request, 'user_account.html', context)
+
+
+@login_required(login_url='login')
 def new_search(request):
 
     if request.method == "POST":
@@ -210,3 +259,16 @@ def new_search(request):
 
     else:
         pass
+
+
+# {% extends 'base.html' %} {% block content %}
+# <form action="" method="POST">
+#   {% csrf_token %}
+#   <div class="container">
+#     {{ form.as_p }}
+
+#     <input type="submit" name="input" class="btn-btn primary" value="Submit" />
+#   </div>
+# </form>
+
+# {% endblock %}
