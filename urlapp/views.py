@@ -1,7 +1,6 @@
 from django.contrib.auth import logout
 from django.shortcuts import render
-from .models import UrlSaveModel, UsersProfile
-from .forms import UrlSaveForm
+from .forms import *
 from django.http import HttpResponse
 import lxml
 from lxml import etree
@@ -44,13 +43,13 @@ def signup_request(request):
 
                 print('signup form is valid!')
 
-                usr = form.save()
+                user = form.save()
                 group = None
 
                 username = form.cleaned_data.get('username')
                 group = Group.objects.get(name='user')
-                usr.groups.add(group)
-                UsersProfile.objects.create(user=usr,)
+                user.groups.add(group)
+                PludoUsersProfile.objects.create(user=user,)
 
                 messages.success(
                     request, 'Account was sucessfully created for ' + username)
@@ -207,10 +206,12 @@ def show_thumbnails(request):
 
 
 @login_required(login_url='login')
-# @allowed_users(allowed_roles=['User'])
+# @allowed_users(allowed_roles=['PludoUsersProfile'])
 def account(request):
-    usersemail = request.user.email
-    userinfo = UsersProfile.objects.get(email=usersemail)
+    username = request.user.pludousersprofile.user
+    print('username', username)
+    userinfo = PludoUsersProfile.objects.get(user=username)
+    print('desc:', userinfo.desc)
     form = UserForm(instance=userinfo)
     if request.method == "POST":
 
@@ -259,16 +260,3 @@ def new_search(request):
 
     else:
         pass
-
-
-# {% extends 'base.html' %} {% block content %}
-# <form action="" method="POST">
-#   {% csrf_token %}
-#   <div class="container">
-#     {{ form.as_p }}
-
-#     <input type="submit" name="input" class="btn-btn primary" value="Submit" />
-#   </div>
-# </form>
-
-# {% endblock %}

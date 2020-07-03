@@ -2,6 +2,7 @@ from django.db import models
 from embed_video.fields import EmbedVideoField
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
 
 
 class UrlSaveModel(models.Model):
@@ -14,15 +15,15 @@ class UrlSaveModel(models.Model):
         return self.desc
 
 
-class UsersProfile(models.Model):
+class PludoUsersProfile(models.Model):
     user = models.OneToOneField(
         User, null=True, blank=True, on_delete=models.CASCADE)
     profile_pic = models.ImageField(
         default='blank-profile-picture.png', null=True, blank=True)
     name = models.CharField(max_length=150, null=True)
     desc = models.CharField(max_length=250, null=True)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     date_created = models.DateTimeField(auto_now_add=True, null=False)
 
     def __str__(self):
-        return str(self.user)
+        return self.user.username

@@ -21,9 +21,15 @@ class UserSignUpForm(UserCreationForm):
 
 class UserForm(ModelForm):
     class Meta:
-        model = UsersProfile
+        model = PludoUsersProfile
         fields = '__all__'
         exclude = ['user']
+
+    # def clean(self):
+    #     email = self.cleaned_data.get('email')
+    #     if User.objects.filter(email=email).exists():
+    #         raise ValidationError("Email exists")
+    #     return self.cleaned_data
 
     # def save(self, commit=True):
     #     user = super(UserSignUpForm, self).save(commit=False)
