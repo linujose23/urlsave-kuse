@@ -207,7 +207,7 @@ def show_thumbnails(request):
 
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['User'])
+# @allowed_users(allowed_roles=['User'])
 def account(request):
     usersemail = request.user.email
     userinfo = UsersProfile.objects.get(email=usersemail)
